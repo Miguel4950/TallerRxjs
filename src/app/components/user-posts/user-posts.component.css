@@ -1,0 +1,16 @@
+.post-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.post-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
+}
+
+.comment-item {
+  transition: background-color 0.2s ease;
+}
+
+.comment-item:hover {
+  background-color: #f1f5f9 !important;
+}

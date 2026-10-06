@@ -1,0 +1,89 @@
+@if (user) {
+  <div class="card shadow-sm border-0 mb-4 overflow-hidden">
+    <div class="card-header bg-primary text-white py-3">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-person-badge fs-4 me-2"></i>
+        <h5 class="card-title mb-0 fw-bold">Información del Usuario</h5>
+      </div>
+    </div>
+    <div class="card-body p-4">
+      <div class="row align-items-center">
+        <div class="col-12 col-md-3 text-center mb-3 mb-md-0 border-end-md">
+          <div class="position-relative d-inline-block">
+            <img 
+              [src]="user.image" 
+              [alt]="user.username" 
+              class="rounded-circle border border-3 border-primary-subtle shadow-sm mb-2"
+              width="110" 
+              height="110" 
+            />
+            <span class="position-absolute bottom-0 end-0 badge rounded-pill bg-success border border-white">
+              Activo
+            </span>
+          </div>
+          <h5 class="fw-bold mb-1">{{ user.firstName }} {{ user.lastName }}</h5>
+          <span class="badge bg-secondary-subtle text-secondary-emphasis fs-6 mb-2">
+            &#64;{{ user.username }}
+          </span>
+          <div>
+            <span class="badge bg-info text-dark text-capitalize">
+              {{ user.role || 'Usuario' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-9 ps-md-4">
+          <div class="row g-3">
+            <div class="col-12 col-sm-6">
+              <div class="p-2 rounded bg-light border-start border-3 border-primary">
+                <small class="text-muted d-block"><i class="bi bi-envelope-at me-1"></i> Correo Electrónico</small>
+                <span class="fw-medium text-break">{{ user.email }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6">
+              <div class="p-2 rounded bg-light border-start border-3 border-success">
+                <small class="text-muted d-block"><i class="bi bi-telephone me-1"></i> Teléfono</small>
+                <span class="fw-medium">{{ user.phone }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6">
+              <div class="p-2 rounded bg-light border-start border-3 border-warning">
+                <small class="text-muted d-block"><i class="bi bi-calendar-event me-1"></i> Edad y Género</small>
+                <span class="fw-medium">{{ user.age }} años • {{ user.gender }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6">
+              <div class="p-2 rounded bg-light border-start border-3 border-info">
+                <small class="text-muted d-block"><i class="bi bi-mortarboard me-1"></i> Universidad</small>
+                <span class="fw-medium text-truncate d-block" [title]="user.university || 'N/A'">
+                  {{ user.university || 'No especificada' }}
+                </span>
+              </div>
+            </div>
+
+            @if (user.company) {
+              <div class="col-12 col-sm-6">
+                <div class="p-2 rounded bg-light border-start border-3 border-secondary">
+                  <small class="text-muted d-block"><i class="bi bi-briefcase me-1"></i> Empresa y Cargo</small>
+                  <span class="fw-medium">{{ user.company.name }} — {{ user.company.title }}</span>
+                </div>
+              </div>
+            }
+
+            @if (user.address) {
+              <div class="col-12 col-sm-6">
+                <div class="p-2 rounded bg-light border-start border-3 border-danger">
+                  <small class="text-muted d-block"><i class="bi bi-geo-alt me-1"></i> Ubicación</small>
+                  <span class="fw-medium">{{ user.address.city }}, {{ user.address.state }}, {{ user.address.country }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

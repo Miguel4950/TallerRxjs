@@ -1,0 +1,142 @@
+<header class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3 mb-4">
+  <div class="container">
+    <div class="d-flex align-items-center">
+      <i class="bi bi-people-fill text-primary fs-3 me-2"></i>
+      <div>
+        <span class="navbar-brand fw-bold mb-0 fs-5 d-block">Taller RxJS — Red Social</span>
+        <small class="text-white-50">Desarrollo Web</small>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container mb-5">
+  <!-- Buscador -->
+  <section class="card shadow-sm border-0 mb-4 overflow-hidden">
+    <div class="card-header bg-white border-bottom py-3">
+      <div class="d-flex align-items-center justify-content-between">
+        <h5 class="card-title mb-0 fw-bold text-dark">
+          <i class="bi bi-search text-primary me-2"></i>Buscar Usuario
+        </h5>
+        <span class="badge bg-light text-secondary border">API DummyJSON</span>
+      </div>
+    </div>
+
+    <div class="card-body p-4">
+      <p class="text-secondary mb-3">
+        Ingresa el nombre de usuario para consultar sus datos, publicaciones y comentarios.
+      </p>
+
+      <form [formGroup]="userForm" class="mb-3">
+        <div class="input-group input-group-lg shadow-sm">
+          <span class="input-group-text bg-light text-muted border-end-0">
+            <i class="bi bi-at fs-4"></i>
+          </span>
+          <input 
+            type="text" 
+            id="username"
+            name="username"
+            class="form-control border-start-0" 
+            formControlName="username" 
+            placeholder="Ejemplo: emilys, michaelw, sophiab, atuny0..."
+            aria-label="Username" 
+            autocomplete="off"
+          />
+          <button 
+            type="submit" 
+            class="btn btn-primary px-4 fw-semibold d-flex align-items-center" 
+            [disabled]="userForm.invalid || loading"
+          >
+            @if (loading) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Buscando...
+            } @else {
+              <i class="bi bi-search me-2"></i>
+              Buscar
+            }
+          </button>
+        </div>
+        @if (userForm.get('username')?.touched && userForm.get('username')?.invalid) {
+          <small class="text-danger d-block mt-2 ps-1">
+            <i class="bi bi-exclamation-circle me-1"></i>El nombre de usuario es obligatorio.
+          </small>
+        }
+      </form>
+
+      <!-- Usuarios sugeridos -->
+      <div class="d-flex flex-wrap align-items-center gap-2 pt-1">
+        <small class="text-muted fw-semibold me-1">Usuarios de prueba:</small>
+        @for (sample of sampleUsers; track sample) {
+          <button 
+            type="button" 
+            class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1"
+            (click)="selectSampleUser(sample)"
+            [disabled]="loading"
+          >
+            &#64;{{ sample }}
+          </button>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Spinner de carga -->
+  @if (loading) {
+    <div class="card border-0 shadow-sm p-5 text-center my-4">
+      <div class="spinner-border text-primary mx-auto mb-3" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <h5 class="fw-bold text-dark mb-1">Cargando datos...</h5>
+      <p class="text-muted mb-0">Consultando usuario, publicaciones y comentarios</p>
+    </div>
+  }
+
+  <!-- Error de conexion -->
+  @if (errorMessage && !loading) {
+    <div class="alert alert-danger border-danger shadow-sm p-4 d-flex align-items-center my-4" role="alert">
+      <i class="bi bi-x-circle-fill fs-2 text-danger me-3 flex-shrink-0"></i>
+      <div>
+        <h5 class="alert-heading fw-bold mb-1">Error</h5>
+        <p class="mb-0">{{ errorMessage }}</p>
+      </div>
+    </div>
+  }
+
+  <!-- Usuario no encontrado -->
+  @if (userNotFound && !loading) {
+    <div class="alert alert-warning border-warning shadow-sm p-4 text-center my-4" role="alert">
+      <div class="d-inline-flex p-3 rounded-circle bg-warning bg-opacity-25 text-warning-emphasis mb-3">
+        <i class="bi bi-person-x-fill fs-1"></i>
+      </div>
+      <h4 class="alert-heading fw-bold text-dark">Usuario no encontrado</h4>
+      <p class="text-secondary fs-6 mb-0">
+        El nombre de usuario <strong>"{{ searchedUsername }}"</strong> no existe en el sistema.
+      </p>
+    </div>
+  }
+
+  <!-- Pantalla inicial sin busqueda -->
+  @if (!user && !userNotFound && !loading && !errorMessage) {
+    <div class="card border-0 bg-primary-subtle shadow-sm p-5 text-center my-4">
+      <div class="d-inline-flex p-3 rounded-circle bg-white text-primary shadow-sm mx-auto mb-3">
+        <i class="bi bi-people-fill fs-1"></i>
+      </div>
+      <h4 class="fw-bold text-primary-emphasis mb-2">Búsqueda de Perfiles</h4>
+      <p class="text-secondary mx-auto mb-0" style="max-width: 520px;">
+        Escribe un nombre de usuario en la barra superior o selecciona uno de los ejemplos para ver su información, publicaciones y comentarios.
+      </p>
+    </div>
+  }
+
+  <!-- Resultados cuando el usuario existe -->
+  @if (user && !loading) {
+    <app-user-profile [user]="user"></app-user-profile>
+    <app-user-posts [posts]="posts"></app-user-posts>
+  }
+</main>
+
+<footer class="bg-white border-top py-3 text-center text-muted small mt-auto">
+  <div class="container">
+    <span>Taller RxJS — Desarrollo Web</span>
+  </div>
+</footer>
